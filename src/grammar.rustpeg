@@ -1,0 +1,22 @@
+use super::BinOp::{AddOp, SubOp, MulOp, DivOp};
+
+#[pub]
+expression -> i32
+    = "(" ws op:binop ws l:expression ws r:expression ws ")" {
+        match &*op {
+            "+" => l + r,
+            "-" => l - r,
+            "*" => l * r,
+            "/" => l / r,
+            _ => panic!("Invalid operation")
+        }
+    }
+    / number
+
+binop -> String
+    = . { match_str.to_string() }
+
+number -> i32
+    = [0-9]+ { match_str.parse().unwrap() }
+
+ws = [ \t\r\n]*
